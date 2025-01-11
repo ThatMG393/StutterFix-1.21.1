@@ -17,8 +17,6 @@ import static net.minecraft.client.option.GameOptions.getGenericValueText;
 
 @Environment(EnvType.CLIENT)
 public class StutterFixOptionsGUI extends GameOptionsScreen {
-
-
     public StutterFixOptionsGUI(Screen parent, GameOptions options) {
         super(parent, options, Text.translatable("stutterfix.options.name"));
     }
@@ -35,22 +33,22 @@ public class StutterFixOptionsGUI extends GameOptionsScreen {
 
         this.body.addSingleOptionEntry( new SimpleOption("stutterfix.options.worker_threads", SimpleOption.constantTooltip(Text.translatable("stutterfix.options.worker_threads.tooltip", default_vanilla, default_stutterfix)), (optionText, value) -> {
             return getGenericValueText(optionText, Text.translatable("stutterfix.options.threads", new Object[]{value}));
-        }, new SimpleOption.ValidatingIntSliderCallbacks(1, max_threads_count), StutterFix.threadconfig.mainWorkerExecutorCount, (value) -> {
-            StutterFix.threadconfig.mainWorkerExecutorCount = (int) value;
+        }, new SimpleOption.ValidatingIntSliderCallbacks(1, max_threads_count), StutterFix.threadConfig.mainWorkerExecutorCount, (value) -> {
+            StutterFix.threadConfig.mainWorkerExecutorCount = (int) value;
             StutterFix.loadMainWorkerExecutor();
         }));
         this.body.addSingleOptionEntry( new SimpleOption("stutterfix.options.Worker_threads_priority_cut", SimpleOption.constantTooltip(Text.translatable("stutterfix.options.Worker_threads_priority_cut.tooltip")), (optionText, value) -> {
             return getGenericValueText(optionText, Text.translatable("stutterfix.options.priority_cut", new Object[]{value}));
-        }, new SimpleOption.ValidatingIntSliderCallbacks(0, max_threads_count), StutterFix.threadconfig.mainWorkerExecutorPriorityCut, (value) -> {
-            StutterFix.threadconfig.mainWorkerExecutorPriorityCut = (int) value;
+        }, new SimpleOption.ValidatingIntSliderCallbacks(0, max_threads_count), StutterFix.threadConfig.mainWorkerExecutorPriorityCut, (value) -> {
+            StutterFix.threadConfig.mainWorkerExecutorPriorityCut = (int) value;
             StutterFix.loadMainWorkerExecutor();
         }));
 
         if(StutterFix.isInitializedRenderThread) {
             this.body.addSingleOptionEntry( new SimpleOption("stutterfix.options.render_thread_priority", SimpleOption.constantTooltip(Text.translatable("stutterfix.options.render_thread_priority.tooltip", defaultRenderThreadPriority)), (optionText, value) -> {
                 return getGenericValueText(optionText, Text.translatable("stutterfix.options.thread_priority", new Object[]{value}));
-            }, new SimpleOption.ValidatingIntSliderCallbacks(1, 10), StutterFix.threadconfig.renderThreadPriority, (value) -> {
-                StutterFix.threadconfig.renderThreadPriority = (int) value;
+            }, new SimpleOption.ValidatingIntSliderCallbacks(1, 10), StutterFix.threadConfig.renderThreadPriority, (value) -> {
+                StutterFix.threadConfig.renderThreadPriority = (int) value;
                 StutterFix.configPriorityRenderThread();
             }));
         }
@@ -58,8 +56,8 @@ public class StutterFixOptionsGUI extends GameOptionsScreen {
         if(StutterFix.isInitializedServerThread) {
             this.body.addSingleOptionEntry( new SimpleOption("stutterfix.options.server_thread_priority", SimpleOption.constantTooltip(Text.translatable("stutterfix.options.server_thread_priority.tooltip", defaultServerThreadPriority)), (optionText, value) -> {
                 return getGenericValueText(optionText, Text.translatable("stutterfix.options.thread_priority", new Object[]{value}));
-            }, new SimpleOption.ValidatingIntSliderCallbacks(1, 10), StutterFix.threadconfig.serverThreadPriority, (value) -> {
-                StutterFix.threadconfig.serverThreadPriority = (int) value;
+            }, new SimpleOption.ValidatingIntSliderCallbacks(1, 10), StutterFix.threadConfig.serverThreadPriority, (value) -> {
+                StutterFix.threadConfig.serverThreadPriority = (int) value;
                 StutterFix.configPriorityServerThread();
             }));
         }
@@ -67,15 +65,14 @@ public class StutterFixOptionsGUI extends GameOptionsScreen {
         if(StutterFix.removeYieldOption) {
             this.body.addSingleOptionEntry(new SimpleOption("stutterfix.options.remove_yield", SimpleOption.constantTooltip(Text.translatable("stutterfix.options.remove_yield.tooltip")), (optionText, value) -> {
                 return (boolean) value ? Text.translatable("stutterfix.options.remove") : Text.translatable("stutterfix.options.keep");
-            }, SimpleOption.BOOLEAN, StutterFix.threadconfig.renderRemoveYield, (value) -> {
-                StutterFix.threadconfig.renderRemoveYield = (boolean) value;
+            }, SimpleOption.BOOLEAN, StutterFix.threadConfig.renderRemoveYield, (value) -> {
+                StutterFix.threadConfig.renderRemoveYield = (boolean) value;
             }));
         }
     }
 
     public void close() {
-        StutterFix.saveThread.execute(() -> { StutterFix.threadconfig.saveConfig(); });
+        StutterFix.saveThread.execute(() -> StutterFix.threadConfig.saveConfig());
         super.close();
     }
-
 }

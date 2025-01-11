@@ -18,25 +18,36 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.function.Supplier;
 
-@Mixin({OptionsScreen.class})
+@Mixin(OptionsScreen.class)
 public abstract class OptionsScreenMixin extends Screen {
-
     @Shadow
     private GameOptions settings;
+
+    @Shadow
+    protected abstract ButtonWidget createButton(Text message, Supplier<Screen> screenSupplier);
 
     protected OptionsScreenMixin(Text title) {
         super(title);
     }
 
-    @Shadow
-    protected abstract ButtonWidget createButton(Text message, Supplier<Screen> screenSupplier);
-
-    @Inject(method = "init()V", at = @At(value = "INVOKE", target = "net/minecraft/client/gui/widget/GridWidget$Adder.add (Lnet/minecraft/client/gui/widget/Widget;)Lnet/minecraft/client/gui/widget/Widget;", ordinal = 0, shift = At.Shift.BEFORE), locals = LocalCapture.CAPTURE_FAILHARD)
+    @Inject(
+    	method = "init()V",
+    	at = @At(
+    		value = "INVOKE",
+    		target = "net/minecraft/client/gui/widget/GridWidget$Adder.add(Lnet/minecraft/client/gui/widget/Widget;)Lnet/minecraft/client/gui/widget/Widget;",
+    		ordinal = 0,
+    		shift = At.Shift.BEFORE
+    	),
+    	locals = LocalCapture.CAPTURE_FAILHARD
+    )
     private void inject_StutterFixOption(CallbackInfo ci, DirectionalLayoutWidget directionalLayoutWidget, DirectionalLayoutWidget directionalLayoutWidget2, GridWidget gridWidget, GridWidget.Adder adder) {
-        if(!StutterFix.threadconfig.hideGui) {
-            adder.add(this.createButton(Text.translatable("stutterfix.name"), () -> {
-                return new StutterFixOptionsGUI((Screen) (Object) this, (GameOptions) (Object) this.settings);
-            }), 2);
+        if (!StutterFix.threadconfig.hideGui) {
+            adder.add(
+            	this.createButton(
+            		Text.translatable("stutterfix.name"),
+            		() -> new StutterFixOptionsGUI((Screen) (Object) this, (GameOptions) (Object) this.settings)
+            	), 2
+            );
         }
     }
 

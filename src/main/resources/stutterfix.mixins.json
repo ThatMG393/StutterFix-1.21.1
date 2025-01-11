@@ -6,9 +6,12 @@
 	"mixins": [
 		"client.MinecraftClientMixin",
 		"client.RemoveYieldMixin",
+
 		"server.MinecraftServerMixin",
+
 		"gui.OptionsScreenMixin",
-		"util.utilMixin"
+
+		"util.UtilMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

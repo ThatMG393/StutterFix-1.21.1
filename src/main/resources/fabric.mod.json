@@ -5,11 +5,11 @@
 	"name": "StutterFix",
 	"description": "This mod limits the number of threads available for chunk generation in order to reduce stuttering.",
 	"authors": [
-		"Wisecase2"
+		"Wisecase2",
+		"ThatMG393"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": ""
+		"sources": "https://github.com/wisecase2/StutterFix"
 	},
 	"license": "MIT",
 	"icon": "assets/stutterfix/icon.png",
@@ -17,9 +17,6 @@
 	"entrypoints": {
 		"main": [
 			"net.wisecase2.stutterfix.StutterFix"
-		],
-		"fabric-datagen": [
-			"net.wisecase2.stutterfix.StutterFixDataGenerator"
 		]
 	},
 	"mixins": [
@@ -27,12 +24,8 @@
 	],
 	"depends": {
 		"fabricloader": ">=0.15.11",
-		"minecraft": "~1.21",
+		"minecraft": ">=1.21",
 		"java": ">=21",
 		"fabric-api": "*"
-	},
-	"suggests": {
-		"another-mod": "*"
 	}
 }
-

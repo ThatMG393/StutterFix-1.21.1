@@ -8,10 +8,15 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(MinecraftClient.class)
 public class RemoveYieldMixin {
-    @Redirect(method = "render(Z)V", at = @At(value = "INVOKE", target = "java/lang/Thread.yield ()V"))
-    private void removeYield(){
-        if(!StutterFix.threadconfig.renderRemoveYield){
-            Thread.yield();
-        }
+    @Redirect(
+    	method = "render(Z)V",
+    	at = @At(
+    		value = "INVOKE",
+    		target = "java/lang/Thread.yield()V"
+    	)
+    )
+    private void removeYield() {
+        if (!StutterFix.threadconfig.renderRemoveYield)
+        	Thread.yield();
     }
 }

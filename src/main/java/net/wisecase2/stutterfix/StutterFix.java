@@ -19,7 +19,7 @@ public class StutterFix implements ModInitializer {
 
 	public static boolean isClientInitialized = false;
 
-	public static ThreadConfig threadconfig = new ThreadConfig();
+	public static ThreadConfig threadConfig = new ThreadConfig();
 	public static boolean isConfigInitialized = false;
 	public static ExecutorService saveThread = Executors.newSingleThreadExecutor();
 
@@ -34,20 +34,18 @@ public class StutterFix implements ModInitializer {
 	public static boolean isInitializedServerThread = false;
 
 	public static void loadMainWorkerExecutor() {
-
 		int threadCount;
 		int threadCut;
 
-		if(isConfigInitialized){
+		if (isConfigInitialized) {
 			threadCount = threadconfig.mainWorkerExecutorCount;
 			threadCut = threadconfig.mainWorkerExecutorPriorityCut;
-		}else{
+		} else {
 			threadCount = getDefaultStutterFixMainWorkerExecutorCount();
 			threadCut = threadCount / 2;
 		}
 
 		AtomicInteger NEXT_WORKER_ID = new AtomicInteger(0);
-
 		mainWorkerExecutor = new ForkJoinPool(threadCount, forkJoinPool -> {
 			ForkJoinWorkerThread forkJoinWorkerThread = new ForkJoinWorkerThread(forkJoinPool){
 
@@ -63,12 +61,10 @@ public class StutterFix implements ModInitializer {
 			};
 			forkJoinWorkerThread.setName("Worker-Main" + "-" + NEXT_WORKER_ID.getAndIncrement());
 
-			if (NEXT_WORKER_ID.get() > threadCut) {
-				forkJoinWorkerThread.setPriority(1);
-			}
-
+			if (NEXT_WORKER_ID.get() > threadCut) forkJoinWorkerThread.setPriority(1);
 			return forkJoinWorkerThread;
 		}, StutterFix::uncaughtExceptionHandler, true);
+
 		isInitializedMainWorkerExecutor = true;
 	}
 
@@ -101,12 +97,12 @@ public class StutterFix implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		threadconfig = ThreadConfig.readConfig("stutterfix-config.json");
-		StutterFix.saveThread.execute(() -> { StutterFix.threadconfig.saveConfig(); });
+		threadConfig = ThreadConfig.readConfig("stutterfix-config.json");
+		StutterFix.saveThread.execute(() -> StutterFix.threadconfig.saveConfig());
 		isConfigInitialized = true;
+
 		reloadAllConfigs();
 	}
-
 
 	public static int getDefaultStutterFixMainWorkerExecutorCount(){
 		int availableProcessors = Runtime.getRuntime().availableProcessors();
@@ -138,7 +134,5 @@ public class StutterFix implements ModInitializer {
 		return 255;
 	}
 
-	public static void uncaughtExceptionHandler(Thread thread, Throwable throwable) {
-	}
-
+	public static void uncaughtExceptionHandler(Thread thread, Throwable throwable) { }
 }
