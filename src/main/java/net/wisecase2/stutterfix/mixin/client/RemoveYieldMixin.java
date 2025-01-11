@@ -16,7 +16,7 @@ public class RemoveYieldMixin {
     	)
     )
     private void removeYield() {
-        if (!StutterFix.threadconfig.renderRemoveYield)
+        if (!StutterFix.threadConfig.renderRemoveYield)
         	Thread.yield();
     }
 }

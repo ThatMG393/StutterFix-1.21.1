@@ -41,7 +41,7 @@ public abstract class OptionsScreenMixin extends Screen {
     	locals = LocalCapture.CAPTURE_FAILHARD
     )
     private void inject_StutterFixOption(CallbackInfo ci, DirectionalLayoutWidget directionalLayoutWidget, DirectionalLayoutWidget directionalLayoutWidget2, GridWidget gridWidget, GridWidget.Adder adder) {
-        if (!StutterFix.threadconfig.hideGui) {
+        if (!StutterFix.threadConfig.hideGui) {
             adder.add(
             	this.createButton(
             		Text.translatable("stutterfix.name"),
