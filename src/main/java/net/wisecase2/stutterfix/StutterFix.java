@@ -38,8 +38,8 @@ public class StutterFix implements ModInitializer {
 		int threadCut;
 
 		if (isConfigInitialized) {
-			threadCount = threadconfig.mainWorkerExecutorCount;
-			threadCut = threadconfig.mainWorkerExecutorPriorityCut;
+			threadCount = threadConfig.mainWorkerExecutorCount;
+			threadCut = threadConfig.mainWorkerExecutorPriorityCut;
 		} else {
 			threadCount = getDefaultStutterFixMainWorkerExecutorCount();
 			threadCut = threadCount / 2;
@@ -79,12 +79,12 @@ public class StutterFix implements ModInitializer {
 
 	public static void configPriorityRenderThread(){
 		if(isConfigInitialized && isInitializedRenderThread){
-			renderThread.setPriority(threadconfig.renderThreadPriority);
+			renderThread.setPriority(threadConfig.renderThreadPriority);
 		}
 	}
 	public static void configPriorityServerThread(){
 		if(isConfigInitialized && isInitializedServerThread){
-			serverThread.setPriority(threadconfig.serverThreadPriority);
+			serverThread.setPriority(threadConfig.serverThreadPriority);
 		}
 	}
 
@@ -98,7 +98,7 @@ public class StutterFix implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		threadConfig = ThreadConfig.readConfig("stutterfix-config.json");
-		StutterFix.saveThread.execute(() -> StutterFix.threadconfig.saveConfig());
+		StutterFix.saveThread.execute(() -> StutterFix.threadConfig.saveConfig());
 		isConfigInitialized = true;
 
 		reloadAllConfigs();
